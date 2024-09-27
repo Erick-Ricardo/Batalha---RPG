@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Prova - Jogo Herói vs Vilão</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<audio id="background-music" src="music/Jungle.mp3" loop></audio>
+<button onclick="document.getElementById('background-music').play()">Iniciar Música</button>
+<div id="app">
+    <div class="character heroi" 
+         :class="{ 
+             'attacking': hero.isAttacking, 
+             'defending': hero.isDefending, 
+             'healing': hero.isHealing,
+             'fleeing': hero.isFleeing
+         }">
+        <div class="life-bar">
+            <div>{{ hero.life }} HP</div>
+        </div>
+        <div class="sprite" :class="hero.action">
+            <span v-text="heroEmoji"></span>
+        </div>
+        <h1>{{ hero.name }}</h1>
+        <div class="actions">
+            <button @click="attack(true)" :disabled="isGameOver">Atacar</button>
+            <button @click="defense(true)" :disabled="isGameOver">Defender</button>
+            <button @click="usePotion(true)" :disabled="isGameOver || hero.potions <= 0">Usar Poção ({{ hero.potions }})</button>
+            <button @click="flee" :disabled="isGameOver">Correr</button>
+        </div>
+    </div>
+    <div class="character vilao" 
+         :class="{ 
+             'attacking': villain.isAttacking, 
+             'defending': villain.isDefending, 
+             'healing': villain.isHealing 
+         }">
+        <div class="life-bar">
+            <div>{{ villain.life }} HP</div>
+        </div>
+        <div class="sprite" :class="villain.action">
+            <span v-text="villainEmoji"></span>
+        </div>
+        <h1>{{ villain.name }}</h1>
+    </div>
+    <div class="log">
+        <h2>Log de Ações</h2>
+        <ul>
+            <li v-for="(entry, index) in log" :key="index">{{ entry }}</li>
+        </ul>
+    </div>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
